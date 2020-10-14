@@ -19,16 +19,15 @@ DOCUMENTATION = '''
             required: True
             choices: ['udf', 'community.general.udf']
         hostnames:
-            description: List of preference about what to use as an hostname.
+            description: List of preference about what to use as a hostname.
             type: list
             default:
                 - public_ipv4
             choices:
-                - public_ipv4
                 - private_ipv4
-                - hostname
+                - id
         groups:
-            description: List of groups. This is a work in progress (not implemented yet)
+            description: List of preference about what to use as source of groups.
             type: list
             choices:
                 - os
@@ -59,13 +58,6 @@ from ansible.module_utils.six.moves.urllib.parse import urljoin
 class InventoryModule(BaseInventoryPlugin):
     NAME = 'udf_inventory'
     API_ENDPOINT = "http://metadata.udf"
-
-    def extract_public_ipv4(self, host_infos):
-        try:
-            return host_infos["mgmtIp"]
-        except (KeyError, TypeError, IndexError):
-            self.display.warning("An error happened while extracting public IPv4 address. Information skipped.")
-            return None
 
     def extract_private_ipv4(self, host_infos):
         try:
@@ -102,18 +94,11 @@ class InventoryModule(BaseInventoryPlugin):
             self.display.warning("An error happened while extracting OS name. Information skipped.")
             return None
 
-    def extract_hostname(self, host_infos):
+    def extract_os_name_for_group(self, host_infos):
         try:
-            return host_infos["id"]
+            return host_infos["osName"].replace(" ", "_").replace(".", "_").lower()
         except (KeyError, TypeError):
-            self.display.warning("An error happened while extracting hostname. Information skipped.")
-            return None
-
-    def extract_deployment(self, host_infos):
-        try:
-            return host_infos["deployment"]["id"]
-        except (KeyError, TypeError):
-            self.display.warning("An error happened while extracting deployment id. Information skipped.")
+            self.display.warning("An error happened while extracting OS name for group. Information skipped.")
             return None
 
     def _fetch_information(self, url):
@@ -146,9 +131,6 @@ class InventoryModule(BaseInventoryPlugin):
         return lookup
 
     def _fill_host_variables(self, hostname, host_infos):
-
-        if self.extract_public_ipv4(host_infos=host_infos):
-            self.inventory.set_variable(hostname, "public_ipv4", self.extract_public_ipv4(host_infos=host_infos))
 
         if self.extract_private_ipv4(host_infos=host_infos):
             self.inventory.set_variable(hostname, "private_ipv4", self.extract_private_ipv4(host_infos=host_infos))
@@ -205,13 +187,12 @@ class InventoryModule(BaseInventoryPlugin):
             group_preferences = []
 
         self.extractors = {
-            "public_ipv4": self.extract_public_ipv4,
             "private_ipv4": self.extract_private_ipv4,
-            "hostname": self.extract_hostname,
+            "id": self.extract_id,
         }
 
         self.group_extractors = {
-            "os": self.extract_os_name
+            "os": self.extract_os_name_for_group
         }
 
         self.headers = {
@@ -226,17 +207,6 @@ class InventoryModule(BaseInventoryPlugin):
             self.display.error("Error occurred. No inventory could be fetched from UDF API.")
             return
 
-        # if "os" in group_preferences:
-        #     rpn_groups_url = urljoin(InventoryModule.API_ENDPOINT, "api/v1/rpn/group")
-        #     rpn_list = self._fetch_information(url=rpn_groups_url)
-        #     self.rpn_lookup_cache = self.extract_rpn_lookup_cache(rpn_list)
-
-
-        # server_url = urljoin(InventoryModule.API_ENDPOINT, server_api_path)
-        # raw_server_info = self._fetch_information(url=server_url)['deployment']['components']
-
-        # if deployment_info['deployment']['components'] is None:
-        #     continue
         for component_info in deployment_info['deployment']['components']:
             self.do_server_inventory(host_infos=component_info,
                                      hostname_preferences=hostname_preferences,
