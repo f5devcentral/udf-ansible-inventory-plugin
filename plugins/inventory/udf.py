@@ -132,7 +132,7 @@ class InventoryModule(BaseInventoryPlugin):
             self.inventory.set_variable(hostname, "name", self.extract_name(host_infos=host_infos))
 
         if self.extract_id(host_infos=host_infos):
-            self.inventory.set_variable(hostname, "id", self.extract_name(host_infos=host_infos))
+            self.inventory.set_variable(hostname, "id", self.extract_id(host_infos=host_infos))
 
         if self.extract_os_name(host_infos=host_infos):
             self.inventory.set_variable(hostname, "os_name", self.extract_os_name(host_infos=host_infos))
