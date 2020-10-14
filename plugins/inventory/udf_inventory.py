@@ -18,11 +18,6 @@ DOCUMENTATION = '''
             description: token that ensures this is a source file for the 'udf' plugin.
             required: True
             choices: ['udf', 'community.general.udf']
-            env:
-                # in order of precedence
-                - name: UDF_TOKEN
-                - name: UDF_API_KEY
-                - name: UDF_OAUTH_TOKEN
         hostnames:
             description: List of preference about what to use as an hostname.
             type: list
@@ -33,7 +28,7 @@ DOCUMENTATION = '''
                 - private_ipv4
                 - hostname
         groups:
-            description: List of groups.
+            description: List of groups. This is a work in progress (not implemented yet)
             type: list
             choices:
                 - os
