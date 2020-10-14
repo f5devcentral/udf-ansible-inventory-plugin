@@ -105,8 +105,6 @@ class InventoryModule(BaseInventoryPlugin):
     def _fetch_information(self, url):
         try:
             response = open_url(url, headers=self.headers)
-            # with open('udf-mock.json') as f:
-            #     response = json.load(f)
         except Exception as e:
             self.display.warning("An error happened while fetching: %s %s" % url, e)
             return None
@@ -213,7 +211,6 @@ class InventoryModule(BaseInventoryPlugin):
         # if deployment_info['deployment']['components'] is None:
         #     continue
         for component_info in deployment_info['deployment']['components']:
-            # print(component_info)
             self.do_server_inventory(host_infos=component_info,
                                      hostname_preferences=hostname_preferences,
                                      group_preferences=group_preferences)
