@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ansible Project
+# Copyright (c) 2020 F5 Networks
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
@@ -16,30 +16,28 @@ DOCUMENTATION = '''
     options:
         plugin:
             description: token that ensures this is a source file for the 'udf' plugin.
-            required: True
-            choices: ['udf', 'community.general.udf']
-        hostnames:
-            description: List of preference about what to use as a hostname.
-            type: list
-            default:
-                - public_ipv4
+            type: str
+            required: true
             choices:
-                - private_ipv4
-                - id
+              - udf
+              - community.general.udf
+        hostname:
+            description: Preference setting about which variable to use as a hostname.
+            type: str
+            default: private_ipv4
+            choices: ['private_ipv4', 'id']
         groups:
-            description: List of preference about what to use as source of groups.
+            description: Preference setting about what source variable to use the source for groups.
             type: list
-            choices:
-                - os
+            choices: ['os']
 '''
 
 EXAMPLES = '''
-# udf_inventory.yml file in YAML format
-# Example command line: ansible-inventory --list -i udf_inventory.yml
+# udf.yml file in YAML format
+# Example command line: ansible-inventory -i inventory/udf.yml --list
 
 plugin: udf
-hostnames:
-  - private_ipv4
+hostname: private_ipv4
 groups:
   - os
 '''
@@ -56,7 +54,7 @@ from ansible.module_utils.six.moves.urllib.parse import urljoin
 
 
 class InventoryModule(BaseInventoryPlugin):
-    NAME = 'udf_inventory'
+    NAME = 'udf'
     API_ENDPOINT = "http://metadata.udf"
 
     def extract_private_ipv4(self, host_infos):
@@ -122,14 +120,6 @@ class InventoryModule(BaseInventoryPlugin):
             except ValueError:
                 raise AnsibleError("Incorrect JSON payload")
 
-    @staticmethod
-    def extract_rpn_lookup_cache(rpn_list):
-        lookup = {}
-        for rpn in rpn_list:
-            for member in rpn["members"]:
-                lookup[member["id"]] = rpn["name"]
-        return lookup
-
     def _fill_host_variables(self, hostname, host_infos):
 
         if self.extract_private_ipv4(host_infos=host_infos):
@@ -147,18 +137,17 @@ class InventoryModule(BaseInventoryPlugin):
         if self.extract_os_name(host_infos=host_infos):
             self.inventory.set_variable(hostname, "os_name", self.extract_os_name(host_infos=host_infos))
 
-    def _filter_host(self, host_infos, hostname_preferences):
+    def _filter_host(self, host_infos, hostname_preference):
 
-        for pref in hostname_preferences:
-            if self.extractors[pref](host_infos):
-                return self.extractors[pref](host_infos)
+        if self.extractors[hostname_preference](host_infos):
+            return self.extractors[hostname_preference](host_infos)
 
         return None
 
-    def do_server_inventory(self, host_infos, hostname_preferences, group_preferences):
+    def do_server_inventory(self, host_infos, hostname_preference, group_preferences):
 
         hostname = self._filter_host(host_infos=host_infos,
-                                     hostname_preferences=hostname_preferences)
+                                     hostname_preference=hostname_preference)
 
         # No suitable hostname were found in the attributes and the host won't be in the inventory
         if not hostname:
@@ -168,6 +157,9 @@ class InventoryModule(BaseInventoryPlugin):
         self._fill_host_variables(hostname=hostname, host_infos=host_infos)
 
         for g in group_preferences:
+            if g not in self.group_extractors:
+                self.display.warning("Invalid group name '%s' specified." % g)
+                return
             group = self.group_extractors[g](host_infos)
 
             if not group:
@@ -180,7 +172,7 @@ class InventoryModule(BaseInventoryPlugin):
         super(InventoryModule, self).parse(inventory, loader, path)
         self._read_config_data(path=path)
 
-        hostname_preferences = self.get_option("hostnames")
+        hostname_preference = self.get_option("hostname")
 
         group_preferences = self.get_option("groups")
         if group_preferences is None:
@@ -209,5 +201,5 @@ class InventoryModule(BaseInventoryPlugin):
 
         for component_info in deployment_info['deployment']['components']:
             self.do_server_inventory(host_infos=component_info,
-                                     hostname_preferences=hostname_preferences,
+                                     hostname_preference=hostname_preference,
                                      group_preferences=group_preferences)

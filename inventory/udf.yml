@@ -1,0 +1,4 @@
+plugin: udf
+hostname: private_ipv4 # possible values: id, private_ipv4
+groups: # possible values: os
+  - os
