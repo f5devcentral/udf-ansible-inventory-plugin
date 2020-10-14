@@ -81,6 +81,20 @@ class InventoryModule(BaseInventoryPlugin):
             # self.display.warning("No internal ssh port for host. Information skipped.")
             return None
 
+    def extract_name(self, host_infos):
+        try:
+            return host_infos["name"]
+        except (KeyError, TypeError):
+            self.display.warning("An error happened while extracting name. Information skipped.")
+            return None
+
+    def extract_id(self, host_infos):
+        try:
+            return host_infos["id"]
+        except (KeyError, TypeError):
+            self.display.warning("An error happened while extracting id. Information skipped.")
+            return None
+
     def extract_os_name(self, host_infos):
         try:
             return host_infos["osName"]
@@ -103,22 +117,25 @@ class InventoryModule(BaseInventoryPlugin):
             return None
 
     def _fetch_information(self, url):
-        try:
-            response = open_url(url, headers=self.headers)
-        except Exception as e:
-            self.display.warning("An error happened while fetching: %s %s" % url, e)
-            return None
+        USE_MOCK = False
 
-        try:
-            raw_data = to_text(response.read(), errors='surrogate_or_strict')
-        except UnicodeError:
-            raise AnsibleError("Incorrect encoding of fetched payload from UDF servers")
+        if USE_MOCK:
+            with open('udf-mock.json') as f:
+                return json.load(f)
+        else:
+            try:
+                response = open_url(url, headers=self.headers)
+            except Exception as e:
+                self.display.error("An error happened while fetching: %s %s" % (url, to_native(e)))
+                return None
 
-        try:
-            return json.loads(raw_data)
-            # return response
-        except ValueError:
-            raise AnsibleError("Incorrect JSON payload")
+            try:
+                raw_data = to_text(response.read(), errors='surrogate_or_strict')
+                return json.loads(raw_data)
+            except UnicodeError:
+                raise AnsibleError("Incorrect encoding of fetched payload from UDF servers")
+            except ValueError:
+                raise AnsibleError("Incorrect JSON payload")
 
     @staticmethod
     def extract_rpn_lookup_cache(rpn_list):
@@ -138,6 +155,12 @@ class InventoryModule(BaseInventoryPlugin):
 
         if self.extract_internal_ssh_port(host_infos=host_infos):
             self.inventory.set_variable(hostname, "internal_ssh_port", self.extract_internal_ssh_port(host_infos=host_infos))
+
+        if self.extract_name(host_infos=host_infos):
+            self.inventory.set_variable(hostname, "name", self.extract_name(host_infos=host_infos))
+
+        if self.extract_id(host_infos=host_infos):
+            self.inventory.set_variable(hostname, "id", self.extract_name(host_infos=host_infos))
 
         if self.extract_os_name(host_infos=host_infos):
             self.inventory.set_variable(hostname, "os_name", self.extract_os_name(host_infos=host_infos))
@@ -198,6 +221,10 @@ class InventoryModule(BaseInventoryPlugin):
 
         servers_url = urljoin(InventoryModule.API_ENDPOINT, "deployment")
         deployment_info = self._fetch_information(url=servers_url)
+
+        if deployment_info is None:
+            self.display.error("Error occurred. No inventory could be fetched from UDF API.")
+            return
 
         # if "os" in group_preferences:
         #     rpn_groups_url = urljoin(InventoryModule.API_ENDPOINT, "api/v1/rpn/group")
