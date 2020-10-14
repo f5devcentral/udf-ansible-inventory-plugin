@@ -1,6 +1,0 @@
-plugin: udf_inventory
-
-hostnames:
-  - private_ipv4
-# groups:
-#   - os
