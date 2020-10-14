@@ -1,0 +1,89 @@
+{
+  "deployment": {
+    "id": "2f24859b-206d-410e-9156-df70a67a6343",
+    "host": "1e109dbd-565c-47fa-9f39-93861543e0ae.access.udfdev.f5.com",
+    "publicIp": "54.185.3.214",
+    "components": [
+      {
+        "id": "51f887da-9cda-4584-a6af-ff4f574ce19e",
+        "name": "big-ip",
+        "osName": "BIG-IP 15.1.0.4-0.0.6 (BYOL)",
+        "mgmtIp": "10.1.1.4",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.7",
+            "secondary": [
+              "10.1.10.15",
+              "10.1.10.9"
+            ]
+          },
+          {
+            "primary": "10.1.20.32",
+            "secondary": [
+              "10.1.20.41",
+              "10.1.20.52"
+            ]
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "9f2a3e6b-3a6e-4993-9a14-956614fa6e30.access.udfdev.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.4",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            },
+            {
+              "host": "d69c5c18-dcd0-4b58-89fb-a74e6f9b6c03.access.udfdev.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.4",
+              "internalPort": 443,
+              "label": "TMUI"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "1e109dbd-565c-47fa-9f39-93861543e0ae.access.udfdev.f5.com",
+              "port": 47000,
+              "internalIp": "10.1.1.4",
+              "internalPort": 22,
+              "parameters": {
+                "username": "admin"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "cd19faa2-cb34-4e2c-9d8d-728e34c49939",
+        "name": "win2019",
+        "osName": "Windows Server 2019 Base",
+        "mgmtIp": "10.1.1.5",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.4",
+            "secondary": [
+              "10.1.10.6"
+            ]
+          }
+        ],
+        "accessMethods": {
+          "rdp": [
+            {
+              "host": "1e109dbd-565c-47fa-9f39-93861543e0ae.access.udfdev.f5.com",
+              "port": 3389,
+              "internalIp": "10.1.1.5",
+              "internalPort": 3389,
+              "label": "RDP"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
