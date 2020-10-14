@@ -22,12 +22,12 @@ DOCUMENTATION = '''
               - udf
               - community.general.udf
         hostname:
-            description: Preference setting about which variable to use as a hostname.
+            description: Preference setting for which variable to use as a hostname.
             type: str
             default: private_ipv4
             choices: ['private_ipv4', 'id']
         groups:
-            description: Preference setting about what source variable to use the source for groups.
+            description: Preference setting for which source variables to use the source for groups.
             type: list
             choices: ['os']
 '''
