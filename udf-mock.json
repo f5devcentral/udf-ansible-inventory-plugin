@@ -1,0 +1,868 @@
+{
+  "deployment": {
+    "id": "6965b2ab-a484-49fc-a994-63f5bc46e53d",
+    "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+    "publicIp": "54.202.46.28",
+    "components": [
+      {
+        "id": "0a8af7f9-d2e1-48aa-8f73-10bbec92ae29",
+        "name": "ansible-1",
+        "osName": "CentOS 7",
+        "mgmtIp": "10.1.1.18",
+        "trafficIps": [],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "d1c52a5b-97ff-4967-a08d-d85a7226d6a1.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.18",
+              "internalPort": 443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "Tower GUI"
+            },
+            {
+              "host": "07b6a2b7-997c-4a30-80b8-bb26cd3d47bc.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.18",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47013,
+              "internalIp": "10.1.1.18",
+              "internalPort": 22,
+              "parameters": {
+                "username": "centos"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "2f89d8b5-6354-4679-a189-c3094ebf106f",
+        "name": "prod-nginx-east-2",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.16",
+        "trafficIps": [
+          {
+            "primary": "10.1.30.112"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47012,
+              "internalIp": "10.1.1.16",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "11236376-6a1c-47b1-ae9e-c9324ce08649.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.16",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "31ad05ec-3d3b-4828-894e-931895c9a3e7",
+        "name": "prod-nginx-west-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.21",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.111"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "0a9ab875-fdb1-4c03-81a2-b624ed699e76.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.21",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47017,
+              "internalIp": "10.1.1.21",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "3542c641-9ec3-4474-b6c5-3322e4b8520f",
+        "name": "dev-nginx-west-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.8",
+        "trafficIps": [
+          {
+            "primary": "10.1.20.111"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47004,
+              "internalIp": "10.1.1.8",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "931d6fe8-5020-4c05-8c88-2c8ab0c3004f.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.8",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "393e7d14-a583-4c8d-b768-cdcc137d0608",
+        "name": "jumphost-1",
+        "osName": "Windows Server 2016 Base",
+        "mgmtIp": "10.1.1.4",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.4"
+          },
+          {
+            "primary": "10.1.20.4"
+          },
+          {
+            "primary": "10.1.30.4"
+          }
+        ],
+        "accessMethods": {
+          "rdp": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 3389,
+              "internalIp": "10.1.1.4",
+              "internalPort": 3389,
+              "label": "RDP"
+            }
+          ]
+        }
+      },
+      {
+        "id": "3c9c4277-47fd-4000-9672-47a1eab9f5b7",
+        "name": "opencart-west-1",
+        "osName": "Ubuntu 16.04 LTS",
+        "mgmtIp": "10.1.1.12",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.41"
+          },
+          {
+            "primary": "10.1.20.41"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "c685c11f-96bb-4613-9f11-a50ca7d8c538.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.12",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            },
+            {
+              "host": "7aa9eea5-1963-4cf0-8671-0035223880e1.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.12",
+              "internalPort": 80,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": false
+              },
+              "label": "http"
+            },
+            {
+              "host": "dfe9118d-bb93-4018-b641-e724896aa50e.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.12",
+              "internalPort": 8443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "https_8443"
+            },
+            {
+              "host": "9dfb7ea2-c531-45d1-a2c9-f28ce1aa3c1c.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.12",
+              "internalPort": 443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "https"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47007,
+              "internalIp": "10.1.1.12",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "4c976741-a248-4ef8-a29a-83875d49c5b4",
+        "name": "dev-nginx-west-2",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.9",
+        "trafficIps": [
+          {
+            "primary": "10.1.20.112"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "56ef704c-34d0-4190-b500-033499922e15.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.9",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47005,
+              "internalIp": "10.1.1.9",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "52c50deb-a7df-42e7-9545-f79a25667f98",
+        "name": "prod-nginx-west-3",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.23",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.113"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47019,
+              "internalIp": "10.1.1.23",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "ebc0c60e-d78e-478b-81f5-7f516cd7c136.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.23",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "677bff1f-92ed-47bd-a1cc-be0bcc773a8f",
+        "name": "database-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.6",
+        "trafficIps": [],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "3ff2426b-c1db-4379-9364-f07ecdbff3a6.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.6",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47002,
+              "internalIp": "10.1.1.6",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "6eeab31d-cb33-404b-b0a3-064f53a1cd9f",
+        "name": "dev-nginx-west-3",
+        "osName": "CentOS 7",
+        "mgmtIp": "10.1.1.13",
+        "trafficIps": [
+          {
+            "primary": "10.1.20.113"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "8a6f6adc-579d-4b3d-9af3-bd48a7efaefc.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.13",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47008,
+              "internalIp": "10.1.1.13",
+              "internalPort": 22,
+              "parameters": {
+                "username": "centos"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "a09d3b34-ba61-4c9c-aa28-032b5435fed9",
+        "name": "prod-devportal-west-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.10",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.7"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "f5e1be37-f684-405c-853e-7241447241a9.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.10",
+              "internalPort": 443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "DevPortal (Mgmt)"
+            },
+            {
+              "host": "b9ede874-ffd9-43b2-aac7-6d5225e7591a.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.10",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            },
+            {
+              "host": "7e7e633c-f540-45a7-91fc-588a47089afc.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.10.7",
+              "internalPort": 443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "DevPortal"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47000,
+              "internalIp": "10.1.1.10",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "a1bea56b-f04d-467c-8c74-f71df94fc0db",
+        "name": "prod-nginx-east-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.15",
+        "trafficIps": [
+          {
+            "primary": "10.1.30.111"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47011,
+              "internalIp": "10.1.1.15",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "4366a23a-6d0d-41e7-87c2-ccee7f57da66.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.15",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "a33960e1-8d55-466c-9c02-f8d1a390bb35",
+        "name": "loadgen-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.27",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.13"
+          },
+          {
+            "primary": "10.1.20.13"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47022,
+              "internalIp": "10.1.1.27",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "2f5f2e14-06c8-4414-837e-77e807bb4249.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.27",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "a888de8e-cf80-43e7-b81e-f0b22372cc2f",
+        "name": "controller-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.5",
+        "trafficIps": [],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "1e2faa2e-8b64-420f-8bb1-f5002e10c5f5.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.5",
+              "internalPort": 443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "GUI / API"
+            },
+            {
+              "host": "3f6bcef4-8090-4cec-b9c9-e32a22493038.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.5",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47001,
+              "internalIp": "10.1.1.5",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "ad27da08-33d5-4857-9876-007caa3da855",
+        "name": "appcontainer-shared-1",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.25",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.11",
+            "secondary": ["10.1.10.21", "10.1.10.31"]
+          },
+          {
+            "primary": "10.1.20.11",
+            "secondary": ["10.1.20.21", "10.1.20.31"]
+          },
+          {
+            "primary": "10.1.30.11",
+            "secondary": ["10.1.30.21", "10.1.30.31"]
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "93afb251-de11-4647-99a7-b09dcf3decc8.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.25",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47020,
+              "internalIp": "10.1.1.25",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "d1d75104-3862-4b03-993e-83d37ff015c0",
+        "name": "prod-nginx-west-4",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.24",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.114"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47023,
+              "internalIp": "10.1.1.24",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "254e67c0-33de-4d0c-8919-caa1b883027f.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.24",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "d2a92147-f00f-4df7-9254-46d80a16d548",
+        "name": "prod-nginx-west-2",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.22",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.112"
+          }
+        ],
+        "accessMethods": {
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47018,
+              "internalIp": "10.1.1.22",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ],
+          "https": [
+            {
+              "host": "33db2814-42f1-4899-a459-ca324ac3bf6f.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.22",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ]
+        }
+      },
+      {
+        "id": "d3af50ba-fc6b-4ced-8bd0-f81f0a8840b1",
+        "name": "appcontainer-shared-2",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.26",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.12",
+            "secondary": ["10.1.10.22", "10.1.10.32"]
+          },
+          {
+            "primary": "10.1.20.12",
+            "secondary": ["10.1.20.22", "10.1.20.32"]
+          },
+          {
+            "primary": "10.1.30.12",
+            "secondary": ["10.1.30.22", "10.1.30.32"]
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "06eaa25d-ecb0-49db-9f86-50fb04070e3a.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.26",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47021,
+              "internalIp": "10.1.1.26",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "e0515383-2107-45c4-9f51-93bc62f0d741",
+        "name": "loadgen-2",
+        "osName": "Ubuntu 18.04 LTS",
+        "mgmtIp": "10.1.1.7",
+        "trafficIps": [
+          {
+            "primary": "10.1.30.13"
+          },
+          {
+            "primary": "10.1.20.23"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "137dbe58-56a6-489d-b71d-27d5c1aecb34.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.7",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47003,
+              "internalIp": "10.1.1.7",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      },
+      {
+        "id": "fb9030cf-0bf1-46fd-a30a-926910bfdd88",
+        "name": "opencart-west-2",
+        "osName": "Ubuntu 16.04 LTS",
+        "mgmtIp": "10.1.1.19",
+        "trafficIps": [
+          {
+            "primary": "10.1.10.42"
+          },
+          {
+            "primary": "10.1.20.42"
+          }
+        ],
+        "accessMethods": {
+          "https": [
+            {
+              "host": "9c756651-e1b8-4c62-9f80-3bfd2a335889.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.19",
+              "internalPort": 47100,
+              "parameters": {
+                "ssl": false
+              },
+              "label": "Web Shell"
+            },
+            {
+              "host": "a43a8141-683d-4cd9-a016-63f17e8156c0.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.19",
+              "internalPort": 8443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "https 8443"
+            },
+            {
+              "host": "efb762cb-b99d-4bb6-bac3-8e9e4e7f078d.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.19",
+              "internalPort": 443,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": true
+              },
+              "label": "https"
+            },
+            {
+              "host": "8c732a0d-16ad-40f0-aed4-33ac3bd41e9e.access.udf.f5.com",
+              "port": 443,
+              "internalIp": "10.1.1.19",
+              "internalPort": 80,
+              "parameters": {
+                "unauthenticated": true,
+                "ssl": false
+              },
+              "label": "http"
+            }
+          ],
+          "ssh": [
+            {
+              "host": "ee804278-7d02-41b5-bcfa-bce1d64655ee.access.udf.f5.com",
+              "port": 47014,
+              "internalIp": "10.1.1.19",
+              "internalPort": 22,
+              "parameters": {
+                "username": "ubuntu"
+              },
+              "label": "SSH"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
