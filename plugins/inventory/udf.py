@@ -64,6 +64,20 @@ class InventoryModule(BaseInventoryPlugin):
             self.display.warning("An error happened while extracting private IPv4 address. Information skipped.")
             return None
 
+    def extract_external_ssh_fqdn(self, host_infos):
+        try:
+            return host_infos["accessMethods"]["ssh"][0]["host"]
+        except (KeyError, TypeError, IndexError):
+            # self.display.warning("An error happened while extracting external ssh fqdn. Information skipped.")
+            return None
+
+    def extract_external_ssh_port(self, host_infos):
+        try:
+            return host_infos["accessMethods"]["ssh"][0]["port"]
+        except (KeyError, TypeError, IndexError):
+            # self.display.warning("No external ssh port for host. Information skipped.")
+            return None
+
     def extract_internal_ssh_port(self, host_infos):
         try:
             return host_infos["accessMethods"]["ssh"][0]["internalPort"]
@@ -124,6 +138,12 @@ class InventoryModule(BaseInventoryPlugin):
 
         if self.extract_private_ipv4(host_infos=host_infos):
             self.inventory.set_variable(hostname, "private_ipv4", self.extract_private_ipv4(host_infos=host_infos))
+
+        if self.extract_external_ssh_fqdn(host_infos=host_infos):
+            self.inventory.set_variable(hostname, "external_ssh_fqdn", self.extract_external_ssh_fqdn(host_infos=host_infos))
+
+        if self.extract_external_ssh_port(host_infos=host_infos):
+            self.inventory.set_variable(hostname, "external_ssh_port", self.extract_external_ssh_port(host_infos=host_infos))
 
         if self.extract_internal_ssh_port(host_infos=host_infos):
             self.inventory.set_variable(hostname, "internal_ssh_port", self.extract_internal_ssh_port(host_infos=host_infos))
